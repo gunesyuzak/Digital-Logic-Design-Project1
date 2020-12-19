@@ -1,14 +1,18 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
 
 import jdk.nashorn.api.tree.ForInLoopTree;
 
 public class Assembler{
 	
-	public static void main(String[] args) throws FileNotFoundException {
+	public static void main(String[] args) throws IOException {
+		
 		File file = new File("input.txt");
 		Scanner input = new Scanner(file);
+		FileWriter output = new FileWriter("output.txt");
 		
 		while(input.hasNextLine()) {
 			String str = input.nextLine();
@@ -165,11 +169,19 @@ public class Assembler{
 				instruction += "0";
 			}
 			String hexInstruction = bin2Hex(instruction);
-			System.out.println(hexInstruction);
+			
+			output.write(hexInstruction + "\n");
 		}
+		input.close();
+		output.close();
 	}
 	public static String dec2Binary(int decimalNumber, int size) {
         String binaryNumber = "";
+        boolean isNegative = false;
+        if(decimalNumber < 0) {
+        	decimalNumber = Math.abs(decimalNumber);
+        	isNegative = true;
+        }
         
         while (decimalNumber != 0) {
             binaryNumber = (decimalNumber % 2) + binaryNumber;
@@ -184,8 +196,46 @@ public class Assembler{
         	binaryNumber = binaryNumber.substring(binaryNumber.length() - size, binaryNumber.length());
         }
         
+        if(isNegative) {
+        	binaryNumber = negate(binaryNumber);
+        	binaryNumber = increment(binaryNumber);
+        }
+        
         return binaryNumber;
     }
+	public static String negate(String s) {
+		String negatedNumber = "";
+		for (int i = 0; i < s.length(); i++) {
+			if(s.charAt(i) == '0') 
+				negatedNumber += "1";
+			else
+				negatedNumber += "0";
+		}
+		return negatedNumber;
+	}
+	
+	public static String increment(String s) {
+		StringBuilder incremented = new StringBuilder(s);
+
+		if(s.charAt(s.length() - 1) == '0')
+			return s.substring(0,s.length()-1) + "1";
+		else {
+			for (int i = incremented.length() - 1 ; i >= 0; i--) {
+				if(incremented.charAt(i) == 1) {
+					incremented.replace(i-1,i,"0");
+					continue;
+				}
+				else {
+					if(i > 0)
+						incremented.replace(i-1,i, "1");
+					else
+						incremented.replace(0, i, "1");
+				}
+			}
+		}
+		
+		return incremented.toString();
+	}
 	
 	public static String hex2Binary(String hexNumber, int size) {
         String binaryNumber = "";
