@@ -164,7 +164,6 @@ public class Assembler{
 			while(instruction.length() < 16) {
 				instruction += "0";
 			}
-			System.out.println(instruction);
 			String hexInstruction = bin2Hex(instruction);
 			System.out.println(hexInstruction);
 		}
