@@ -7,7 +7,7 @@ import jdk.nashorn.api.tree.ForInLoopTree;
 public class Assembler{
 	
 	public static void main(String[] args) throws FileNotFoundException {
-		File file = new File("D:\\Eclipse workplace\\CSE3015Project1\\src\\input.txt");
+		File file = new File("input.txt");
 		Scanner input = new Scanner(file);
 		
 		while(input.hasNextLine()) {
