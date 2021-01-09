@@ -14,6 +14,7 @@ public class Assembler{
 		Scanner input = new Scanner(file);
 		FileWriter output = new FileWriter("output.txt");
 		
+		output.write("v2.0 raw\n");
 		while(input.hasNextLine()) {
 			String str = input.nextLine();
 			str = str.replaceAll(",", " ");
@@ -92,6 +93,7 @@ public class Assembler{
 				case "CMP":
 					
 					instruction += "0111";
+					instruction += "000";
 					instruction += dec2Binary(tokens[1].charAt(1) - '0',3);
 					instruction += dec2Binary(tokens[2].charAt(1) - '0',3);
 					break;
